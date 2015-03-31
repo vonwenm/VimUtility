@@ -21,7 +21,7 @@ int get_line(char line[], int max_line)
     return i;
 }
 
-int copy(char to[], char from[])
+void copy(char to[], char from[])
 {
     int i = 0;
     while ((to[i] = from[i]) != '\0') {
@@ -111,29 +111,79 @@ int trim(char s[])
     return n;
 }
 
+void kr_strcat(char* s, char* t)
+{
+    while (*s != '\0')
+        ++s;
+    while ((*s++ = *t++) != '\0')
+        ;
+}
+
+int kr_strend(char* s, char* t)
+{
+    int slen = strlen(s) - 1;
+    int tlen = strlen(t) - 1;
+    if (slen < tlen) {
+        return 0;
+    }
+
+    while(slen >= 0 && tlen >= 0) {
+        if (*(s + slen) != *(t + tlen))
+            return 0;
+        --slen;
+        --tlen;
+    }
+
+    return 1;
+}
+
 int main(int argc, char const* argv[])
 {
-    int i;
-    int w = 0;
-    char a[1024];
+/*
+ * #define db_kr_strend(s, t) printf("%s %s: %d\n", s, t, kr_strend(s, t))
+ * 
+ *     db_kr_strend("hello", "h");
+ *     db_kr_strend("hello", "o");
+ *     db_kr_strend("hello", "lo");
+ *     db_kr_strend("hello", "ol");
+ *     db_kr_strend("hello", "llo");
+ *     db_kr_strend("hello", "ello");
+ *     db_kr_strend("hello", "hello");
+ *     db_kr_strend("hello", "ahello");
+ */
 
-    i = 0x7FFFFFFF + 1;
 
-    itoa(i, a);
-    printf("%d -> %s\n", i, a);
+/*
+ *     char hello_world[1024] = "hello";
+ * 
+ *     kr_strcat(hello_world, " world");
+ * 
+ *     printf("%s\n", hello_world);
+ */
 
-    itoa_ex(i, a, w);
-    printf("%d -> %s\n", i, a);
-
-    itob_ex(i, a, 8, w);
-    printf("%d -> %s\n", i, a);
-
-    itob_ex(i, a, 2, w);
-    printf("%d -> %s\n", i, a);
-
-    i = 255;
-    itob_ex(i, a, 16, w);
-    printf("%d -> %s\n", i, a);
+/*
+ *     int i;
+ *     int w = 0;
+ *     char a[1024];
+ * 
+ *     i = 0x7FFFFFFF + 1;
+ * 
+ *     itoa(i, a);
+ *     printf("%d -> %s\n", i, a);
+ * 
+ *     itoa_ex(i, a, w);
+ *     printf("%d -> %s\n", i, a);
+ * 
+ *     itob_ex(i, a, 8, w);
+ *     printf("%d -> %s\n", i, a);
+ * 
+ *     itob_ex(i, a, 2, w);
+ *     printf("%d -> %s\n", i, a);
+ * 
+ *     i = 255;
+ *     itob_ex(i, a, 16, w);
+ *     printf("%d -> %s\n", i, a);
+ */
 
 /*
  *     int i;

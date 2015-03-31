@@ -10,5 +10,8 @@ double pop(void);
 double kr_atof(char s[]);
 int getch(void);
 void ungetch(int);
+int kr_getline(char line[], int max_line);
+char *alloc(int n);
+void afree(char *p);
 
 #endif
