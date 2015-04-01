@@ -7,7 +7,7 @@ char* lineptr[MAXLINES];
 
 int readlines(char* lineptr[], int nlines);
 void writelines(char* lineptr[], int nlines);
-void str_qsort(char* v[], int left, int right,
+void str_qsort(void* v[], int left, int right,
         int (*comp)(void*, void*));
 
 int main(int argc, char const* argv[])
@@ -15,7 +15,7 @@ int main(int argc, char const* argv[])
     int nlines;
 
     if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
-        str_qsort(lineptr, 0, nlines - 1, (int(*)(void*, void*))strcmp);
+        str_qsort((void**)lineptr, 0, nlines - 1, (int(*)(void*, void*))strcmp);
         writelines(lineptr, nlines);
         return 0;
     }
@@ -62,16 +62,16 @@ void writelines(char* lineptr[], int nlines)
     }
 }
 
-void str_swap(char* v[], int i, int j)
+void str_swap(void* v[], int i, int j)
 {
-    char* temp;
+    void* temp;
 
     temp = v[i];
     v[i] = v[j];
     v[j] = temp;
 }
 
-void str_qsort(char* v[], int left, int right,
+void str_qsort(void* v[], int left, int right,
         int (*comp)(void*, void*))
 {
     int i;
