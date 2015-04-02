@@ -14,9 +14,12 @@ int main(int argc, char const* argv[])
 {
     int nlines;
 
-    if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
+    int (*rl)(char* lineptr[], int nlines) = readlines;
+    void (*wl)(char* lineptr[], int nlines) = writelines;
+
+    if ((nlines = (*rl)(lineptr, MAXLINES)) >= 0) {
         str_qsort((void**)lineptr, 0, nlines - 1, (int(*)(void*, void*))strcmp);
-        writelines(lineptr, nlines);
+        (*wl)(lineptr, nlines);
         return 0;
     }
     else {
