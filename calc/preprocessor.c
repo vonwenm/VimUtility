@@ -3,9 +3,14 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "calc.h"
-#include "preprocessor.h"
 
 #define HASHSIZE 1001
+
+typedef struct nlist {  /* table entry: */
+    struct nlist* next; /* next entry in chain */
+    char* name;         /* defined name */
+    char* defn;         /* replacement text */
+} nlist;
 
 static nlist* hashtab[HASHSIZE]; /* pointer table */
 
