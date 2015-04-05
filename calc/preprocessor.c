@@ -32,25 +32,6 @@ nlist* lookup(char* s)
     return NULL;        /* not found */
 }
 
-nlist* lookprevious(char* s, nlist* l)
-{
-    nlist* np;
-    nlist* pre;
-
-    pre = NULL;
-
-    for (np = hashtab[hash(s)]; np != NULL; np = np->next) {
-        if (np == l) {
-            break;
-        }
-        else {
-            pre = np;
-        }
-    }
-
-    return pre;
-}
-
 nlist* install(char* name, char* defn)
 {
     nlist* np;
@@ -81,11 +62,18 @@ void undef(char* name)
     nlist* pre;
     unsigned int hashval;
 
-    if ((np = lookup(name)) == NULL) { /* not found */
-        return;
+    pre = NULL;
+
+    for (np = hashtab[hash(name)]; np != NULL; np = np->next) {
+        if (strcmp(name, np->name) == 0) {
+            break;
+        }
+        else {
+            pre = np;
+        }
     }
-    else { /* found it */
-        pre = lookprevious(name, np);
+
+    if (np != NULL) {
         if (pre == NULL) {
             hashval = hash(name);
             hashtab[hashval] = np->next;
@@ -95,6 +83,7 @@ void undef(char* name)
         }
         free((void*) np->defn); /* free defn */
         free((void*) np->name); /* free name */
+        free((void*) np); /* free struct */
     }
 }
 
@@ -121,6 +110,7 @@ int main(int argc, char const* argv[])
     undef("MIN");
 
     l = lookup("MIN");
+
     print(l);
 
     return 0;
