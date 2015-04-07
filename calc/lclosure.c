@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <assert.h>
 
+// Show A tricy about THIS
+
 typedef struct Num {
     int i;
 } Num;
@@ -9,7 +11,7 @@ typedef struct Num {
 typedef struct LClosure {
     int foo;
     int goo;
-	Num *num_array[1];
+	Num *num_array[1];  // list of Num (THIS)
 } LClosure;
 
 #define sizeLclosure(n)	(sizeof(LClosure) + \
