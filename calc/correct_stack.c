@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <assert.h>
 
+/* simulate correct_stack in lua source code */
+
 int main(int argc, char const* argv[])
 {
     int i;
