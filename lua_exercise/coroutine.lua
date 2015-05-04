@@ -137,3 +137,168 @@ print("-------------- Test 8 --------------")
 -- consumer(f)
 
 print("-------------- Test 8 --------------")
+-- function permgen(a, n)
+--     n = n or #a     -- default for 'n' is size of 'a'
+--     if n <= 1 then
+--         printResult(a)
+--     else
+--         for i = 1, n do
+--             -- put i-th element as the last one
+--             a[n], a[i] = a[i], a[n]
+--             -- generate all permutations of the other elements
+--             permgen(a, n - 1)
+--             -- restore i-th element
+--             a[n], a[i] = a[i], a[n]
+--         end
+--     end
+-- end
+
+-- function printResult(a)
+--     for i = 1, #a do
+--         io.write(a[i], " ")
+--     end
+--     io.write("\n")
+-- end
+
+-- permgen({1, 2, 3, 4})
+
+
+print("-------------- Test 9 --------------")
+-- function permgen(a, n)
+--     n = n or #a     -- default for 'n' is size of 'a'
+--     if n <= 1 then
+--         coroutine.yield(a)
+--     else
+--         for i = 1, n do
+--             -- put i-th element as the last one
+--             a[n], a[i] = a[i], a[n]
+--             -- generate all permutations of the other elements
+--             permgen(a, n - 1)
+--             -- restore i-th element
+--             a[n], a[i] = a[i], a[n]
+--         end
+--     end
+-- end
+
+-- function permutations(a)
+--     local co = coroutine.create(function()
+--         permgen(a)
+--     end)
+--     return function()   -- iterator
+--         local code, res = coroutine.resume(co)
+--         return res
+--     end
+-- end
+
+-- function permutations_wrap(a)
+--     return coroutine.wrap(function() 
+--         permgen(a)
+--     end)
+-- end
+
+-- function print_array(a)
+--     for i = 1, #a do
+--         io.write(a[i], " ")
+--     end
+--     io.write("\n")
+-- end
+
+-- for p in permutations_wrap({"a", "b", "c"}) do
+--     print_array(p)
+-- end
+
+print("-------------- Test 10 --------------")
+-- local socket = require "socket"
+
+-- function download(host, file)
+--     local c = assert(socket.connect(host, 80))
+--     local count = 0
+--     c:send("GET " .. file .. " HTTP/1.0\r\n\r\n")
+--     while true do
+--         local s, status = receive(c)
+--         count = count + #s
+--         if status == "closed" then
+--             break
+--         end
+--     end
+--     c:close()
+--     print(file, count)
+-- end
+
+-- function receive(connection)
+--     connection:settimeout(0)    -- do not black
+--     local s, status, partial = connection:receive(2^10)
+--     if status == "timeout" then
+--         coroutine.yield(connection)
+--     end
+--     return s or partial, status
+-- end
+
+-- thread = {}     -- list of all live threads
+
+-- function get(host, file)
+--     -- create coroutine
+--     local co = coroutine.create(function()
+--         download(host, file)
+--     end)
+--     -- insert it in the list
+--     table.insert(threads, co)
+-- end
+
+-- function dispatch()
+--     local i = 1
+--     while true do
+--         if threads[i] == nil then   -- no more threads
+--             if threads[1] == nil then -- list is empty?
+--                 break
+--             end
+--             i = 1   -- restart the loop
+--         end
+
+--         local status, res = coroutine.resume(threads[i])
+--         if not res then -- thread finished its task?
+--             table.remove(threads, i)
+--         else
+--             i = i + 1 -- go to next thread
+--         end
+--     end
+-- end
+
+-- function select_dispatch()
+--     local i = 1
+--     local timedout = {}
+--     while true do
+--         if threads[i] == nil then
+--             if threads[1] == nil then -- no more threads
+--                 break
+--             end
+--             i = 1    -- restart the loop
+--             timedout = {}
+--         end
+
+--         local status, res = coroutine.resume(threads[i])
+--         if not res then
+--             table.remove(threads, i)
+--         else -- time out
+--             i = i + 1
+--             timedout[#timedout + 1] = res
+--             if #timedout == #threads then -- all threads blocked?
+--                 socket.select(timedout)
+--             end
+--         end
+--     end
+-- end
+
+-- host = "www.w3.org"
+-- get(host, "/TR/html401/html40.txt")
+
+-- dispatch()
+
+print("Solution Exercise 9.1")
+
+-- for c in combinations({"a", "b", "c"}, 2) do
+--     printResult(c)
+-- end
+
+-- print("Solution Exercise 9.2")
+-- print("Solution Exercise 9.3")
