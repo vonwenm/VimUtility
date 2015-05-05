@@ -295,10 +295,50 @@ print("-------------- Test 10 --------------")
 -- dispatch()
 
 print("Solution Exercise 9.1")
+function combingen(a, c, n, m)
+    if n == 1 or m == 0 or n <= m then
+        -- print(string.format("N%d M%d", n, m))
+        local c2 = {}
+        for i = 1, #c do
+            table.insert(c2, c[i])
+        end
+        if m > 0 then
+            for i = n, 1, -1 do
+                table.insert(c2, a[i])
+            end
+        end
+        coroutine.yield(c2)
+    else
+        -- print(string.format("N%d M%d", n, m))
+        combingen(a, c, n - 1, m)
+        table.insert(c, a[n])
+        combingen(a, c, n - 1, m - 1)
+        table.remove(c, #c)
+    end
+end
 
--- for c in combinations({"a", "b", "c"}, 2) do
---     printResult(c)
--- end
+function combinations(a, m)
+    local co = coroutine.create(function()
+        local n = #a
+        local c = {}
+        combingen(a, c, n, m)
+    end)
+    return function() -- iterator
+        local code, res = coroutine.resume(co)
+        return res
+    end
+end
+
+function printcombin(c)
+    for i = #c, 1, -1 do
+        io.write(c[i] .. " ")
+    end
+    io.write("\n")
+end
+
+for c in combinations({"a", "b", "c", "d"}, 2) do
+    printcombin(c)
+end
 
 -- print("Solution Exercise 9.2")
 -- print("Solution Exercise 9.3")
