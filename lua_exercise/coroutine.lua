@@ -295,50 +295,110 @@ print("-------------- Test 10 --------------")
 -- dispatch()
 
 print("Solution Exercise 9.1")
-function combingen(a, c, n, m)
-    if n == 1 or m == 0 or n <= m then
-        -- print(string.format("N%d M%d", n, m))
-        local c2 = {}
-        for i = 1, #c do
-            table.insert(c2, c[i])
-        end
-        if m > 0 then
-            for i = n, 1, -1 do
-                table.insert(c2, a[i])
-            end
-        end
-        coroutine.yield(c2)
-    else
-        -- print(string.format("N%d M%d", n, m))
-        combingen(a, c, n - 1, m)
-        table.insert(c, a[n])
-        combingen(a, c, n - 1, m - 1)
-        table.remove(c, #c)
-    end
-end
+-- function combingen(a, c, n, m)
+--     if n == 1 or m == 0 or n <= m then
+--         -- print(string.format("N%d M%d", n, m))
+--         local c2 = {}
+--         for i = 1, #c do
+--             table.insert(c2, c[i])
+--         end
+--         if m > 0 then
+--             for i = n, 1, -1 do
+--                 table.insert(c2, a[i])
+--             end
+--         end
+--         coroutine.yield(c2)
+--     else
+--         -- print(string.format("N%d M%d", n, m))
+--         combingen(a, c, n - 1, m)
+--         table.insert(c, a[n])
+--         combingen(a, c, n - 1, m - 1)
+--         table.remove(c, #c)
+--     end
+-- end
 
-function combinations(a, m)
-    local co = coroutine.create(function()
-        local n = #a
-        local c = {}
-        combingen(a, c, n, m)
-    end)
-    return function() -- iterator
-        local code, res = coroutine.resume(co)
-        return res
-    end
-end
+-- function combinations(a, m)
+--     local co = coroutine.create(function()
+--         local n = #a
+--         local c = {}
+--         combingen(a, c, n, m)
+--     end)
+--     return function() -- iterator
+--         local code, res = coroutine.resume(co)
+--         return res
+--     end
+-- end
 
-function printcombin(c)
-    for i = #c, 1, -1 do
-        io.write(c[i] .. " ")
-    end
-    io.write("\n")
-end
+-- function printcombin(c)
+--     for i = #c, 1, -1 do
+--         io.write(c[i] .. " ")
+--     end
+--     io.write("\n")
+-- end
 
-for c in combinations({"a", "b", "c", "d"}, 2) do
-    printcombin(c)
-end
+-- for c in combinations({"a", "b", "c", "d"}, 2) do
+--     printcombin(c)
+-- end
 
 -- print("Solution Exercise 9.2")
--- print("Solution Exercise 9.3")
+print("Solution Exercise 9.3")
+
+local thread_map = {}
+function create_thread(tag)
+    local max = 3
+    local i = 0
+    local ot = os.time()
+    local co = coroutine.create(function()
+        while true do
+            local nt = os.time()
+            local dt = os.difftime(nt, ot)
+            if math.abs(dt) > 1 then
+                i = i + 1
+                if i > max then
+                    break
+                end
+
+                print(string.format("%s - %d", tag, i))
+                ot = nt
+
+                transfer(other_thread_tag(tag))
+            end
+        end
+    end)
+    thread_map[tag] = co
+end
+
+function create_all_thread()
+    create_thread("Hello world")
+    create_thread("Log")
+    local dispatch = coroutine.create(dispatch_thread)
+    coroutine.resume(dispatch, "Hello world")
+end
+
+function other_thread_tag(tag)
+    for thread_tag in pairs(thread_map) do
+        if thread_tag ~= tag then
+            return thread_tag
+        end
+    end
+end
+
+function transfer(tag)
+    coroutine.yield(tag)
+end
+
+function dispatch_thread(tag)
+    while true do
+        local co = thread_map[tag]
+        if co == nil then
+            break
+        end
+        local status, value = coroutine.resume(co)
+        if not status then
+            break
+        end
+        tag = value
+    end
+end
+
+create_all_thread()
