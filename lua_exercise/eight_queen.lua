@@ -28,6 +28,7 @@ end
 local function addqueen(a, n)
     if n > N then   -- all queens have been palced?
         printsolution(a)
+        coroutine.yield()
     else    -- try to place n-th queen
         for c = 1, N do
             if isplaceok(a, n, c) then
@@ -39,4 +40,5 @@ local function addqueen(a, n)
 end
 
 -- run the program
-addqueen({}, 1)
+local co = coroutine.create(addqueen)
+coroutine.resume(co, {}, 1)
