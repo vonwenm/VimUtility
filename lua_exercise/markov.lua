@@ -1,3 +1,5 @@
+local PREFIX_SIZE = 5
+
 math.randomseed(os.time())
 
 function allwords()
@@ -18,8 +20,8 @@ function allwords()
     end
 end
 
-function prefix(w1, w2)
-    return w1 .. " " .. w2
+function prefix(list)
+    return table.concat(list, " ")
 end
 
 local statetab = {}
@@ -33,24 +35,30 @@ function insert(index, value)
     end
 end
 
-local N = 2
 local MAXGEN = 10000
 local NOWORD = "\n"
 
 -- build table
-local w1, w2 = NOWORD, NOWORD
-for w in allwords() do
-    insert(prefix(w1, w2), w)
-    w1 = w2
-    w2 = w
+local pre_list = {}
+for i = 1, PREFIX_SIZE do
+    table.insert(pre_list, NOWORD)
 end
-insert(prefix(w1, w2), NOWORD)
+
+for w in allwords() do
+    insert(prefix(pre_list), w)
+    table.remove(pre_list, 1)
+    table.insert(pre_list, w)
+end
+insert(prefix(pre_list), NOWORD)
 
 -- generate text
-w1 = NOWORD     -- reinitialize
-w2 = NOWORD
+local pre_list = {}
+for i = 1, PREFIX_SIZE do
+    table.insert(pre_list, NOWORD)
+end
+
 for i = 1, MAXGEN do
-    local list = statetab[prefix(w1, w2)]
+    local list = statetab[prefix(pre_list)]
     -- choose a ramdom item from list
     local r = math.random(#list)
     local nextword = list[r]
@@ -58,6 +66,6 @@ for i = 1, MAXGEN do
         return
     end
     io.write(nextword, " ")
-    w1 = w2
-    w2 = nextword
+    table.remove(pre_list, 1)
+    table.insert(pre_list, nextword)
 end
