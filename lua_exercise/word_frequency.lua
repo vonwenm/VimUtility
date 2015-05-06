@@ -1,3 +1,5 @@
+local WORD_MIN_LEN = 4
+
 local function allwords()
     local auxwords = function()
         for line in io.lines() do
@@ -11,7 +13,9 @@ end
 
 local counter = {}
 for w in allwords() do
-    counter[w] = (counter[w] or 0) + 1
+    if #w >= WORD_MIN_LEN then
+        counter[w] = (counter[w] or 0) + 1
+    end
 end
 
 local words = {}
