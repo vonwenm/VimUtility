@@ -4,6 +4,17 @@ function List.new()
     return {first = 0, last = -1}
 end
 
+function List.Debug(list)
+    print(string.format("FI:%d LI:%d", list.first, list.last))
+end
+
+function List.FixIndex(list)
+    if list.first > list.last then
+        list.first = 0
+        list.last = -1
+    end
+end
+
 function List.pushfirst(list, value)
     local first = list.first - 1
     list.first = first
@@ -24,6 +35,8 @@ function List.popfirst(list)
     local value = list[first]
     list[first] = nil   -- to allow garbage collection
     list.first = first + 1
+
+    List.FixIndex(list)
     return value
 end
 
@@ -35,6 +48,8 @@ function List.poplast(list)
     local value = list[last]
     list[last] = nil    -- to allow garbage collection
     list.last = last - 1
+
+    List.FixIndex(list)
     return value
 end
 
@@ -53,3 +68,8 @@ List.pushfirst(l, "Debug ")
 List.pushlast(l, "World")
 List.pushlast(l, "!")
 List.traverse(l)
+List.popfirst(l)
+List.poplast(l)
+List.poplast(l)
+List.poplast(l)
+List.Debug(l)
