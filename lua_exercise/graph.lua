@@ -12,12 +12,12 @@ local function readgraph()
     local graph = {}
     for line in io.lines() do
         -- split line in two names
-        local name_from, name_to = string.match(line, "(%S+)%s+(%S+)")
+        local name_from, name_to, arc_label = string.match(line, "(%S+)%s+(%S+)%s+(%d+)")
         -- find corresponding nodes
         local from = name2node(graph, name_from)
         local to = name2node(graph, name_to)
         -- adds 'to' to the adjacent set of 'from'
-        from.adj[to] = true
+        from.adj[to] = arc_label
     end
     return graph
 end
@@ -46,13 +46,19 @@ end
 
 local function printpath(path)
     if not path then
-        print("path is empty")
+        io.write("path is empty\n")
         return
     end
 
     for i = 1, #path do
-        print(path[i].name)
+        local node = path[i]
+        local pre_node = path[i - 1]
+        if pre_node then
+            io.write(string.format(" (%d) ", pre_node.adj[node]))
+        end
+        io.write(node.name)
     end
+    io.write("\n")
 end
 
 g = readgraph()
