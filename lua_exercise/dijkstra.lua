@@ -47,19 +47,18 @@ local function dijkstra(g, s, w)
     local Q = {}
     local P = {}
 
-    D[s] = 0
     local i = 1
     for _, node in pairs(g) do
         Q[i] = node
+        D[node] = math.huge
         i = i + 1
     end
+    D[s] = 0
 
     while #Q > 0 do
         local u = extract_min(Q, D)
         table.insert(S, u)
         for v, d in pairs(u.adj) do
-            D[v] = D[v] or math.huge
-            D[u] = D[u] or math.huge
             if D[v] > D[u] + d then
                 D[v] = D[u] + d
                 P[v] = u
@@ -74,8 +73,8 @@ function printpath(P, w)
     while P[w] do
         io.write(w.name .. " ")
         w = P[w]
-        io.write(w.name .. " ")
     end
+    io.write(w.name .. "\n")
 end
 
 g = readgraph()
