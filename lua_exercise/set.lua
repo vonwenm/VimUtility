@@ -69,15 +69,16 @@ mt.__mul = Set.intersection
 mt.__le = Set.contain
 mt.__lt = Set.realcontain
 mt.__eq = Set.equal
+mt.__tostring = Set.tostring
 
 local s1 = Set.new({1, 2, 3})
 local s2 = Set.new({1, 2, 3, 4})
 local u1 = s1 + s2
 local i1 = s1 * s2
-Set.print(s1)
-Set.print(s2)
-Set.print(u1)
-Set.print(i1)
+print(s1)
+print(s2)
+print(u1)
+print(i1)
 
 print(s1 <= s2)
 print(s1 < s2)
