@@ -35,6 +35,16 @@ function Set.intersection(a, b)
     return res
 end
 
+function Set.difference(a, b)
+    local res = Set.new({})
+    for k in pairs(a) do
+        if not b[k] then
+            res[k] = true
+        end
+    end
+    return res
+end
+
 function Set.contain(a, b)
     for k in pairs(a) do
         if not b[k] then
@@ -60,25 +70,39 @@ function Set.tostring(set)
     return "{" .. table.concat(l, ", ") .. "}"
 end
 
-function Set.print(s)
-    print(Set.tostring(s))
+function Set.length(set)
+    local l = 0
+    for k in pairs(set) do
+        l = l + 1
+    end
+    return l
 end
 
 mt.__add = Set.union
 mt.__mul = Set.intersection
+mt.__sub = Set.difference
 mt.__le = Set.contain
 mt.__lt = Set.realcontain
 mt.__eq = Set.equal
 mt.__tostring = Set.tostring
+mt.__len = Set.length
 
 local s1 = Set.new({1, 2, 3})
-local s2 = Set.new({1, 2, 3, 4})
+local s2 = Set.new({2, 3, 4})
 local u1 = s1 + s2
 local i1 = s1 * s2
-print(s1)
-print(s2)
+local d1 = s1 - s2
+local d2 = s2 - s1
 print(u1)
 print(i1)
+print(d1)
+print(d2)
+print(#s1)
+print(#s2)
+print(#u1)
+print(#i1)
+print(#d1)
+print(#d2)
 
 print(s1 <= s2)
 print(s1 < s2)
