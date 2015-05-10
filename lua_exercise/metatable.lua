@@ -95,21 +95,48 @@ for i, v in ipairs(t) do
     print(i, v)
 end
 
--- function readonly(t)
---     local proxy = {}
---     local mt = { -- create metatable
---         __index = t,
---         __newindex = function(t, k, v)
---             error("attemp to update a read-only table", 2)
---         end
---     }
---     setmetatable(proxy, mt)
---     return proxy
--- end
+print("---------------- Read only Table Version 1")
+function readonly(t)
+    local proxy = {}
+    local mt = { -- create metatable
+        __index = t,
+        __newindex = function(t, k, v)
+            error("attemp to update a read-only table", 2)
+        end
+    }
+    setmetatable(proxy, mt)
+    return proxy
+end
 
--- local t = {"hello world", "yes", "no"}
--- local t = readonly(t)
--- print(t[1])
--- print(t[2])
--- print(t[3])
+local t = {"hello world", "yes", "no"}
+local t = readonly(t)
+print(t[1])
+print(t[2])
+print(t[3])
 -- t[1] = "false"
+
+
+print("---------------- Read only Table Version 2")
+local readonly_mt = {
+    __index = function(t, k)
+        return t.__original_table[k]
+    end,
+
+    __newindex = function(t, k, v)
+        error("attemp to update a read-only table", 2)
+    end,
+}
+
+function readonly2(t)
+    local readonly_proxy = {}
+    readonly_proxy.__original_table = t
+    setmetatable(readonly_proxy, readonly_mt)
+    return readonly_proxy
+end
+
+local t = {"mac", "osx", "vim"}
+local t = readonly2(t)
+print(t[1])
+print(t[2])
+print(t[3])
+-- t[1] = "win"
