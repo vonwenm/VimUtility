@@ -11,16 +11,16 @@
 -- print(type(io.read))
 -- print(type(_G["io.read"]))
 
--- function getfield(f)
---     local v = _G
---     for w in string.gmatch(f, "[%w_]+") do
---         v = v[w]
---     end
---     return v
--- end
+function getfield(f)
+    local v = _G
+    for w in string.gmatch(f, "[%w_]+") do
+        v = v[w]
+    end
+    return v
+end
 
--- local sys_write = getfield("io.write")
--- sys_write("Hello world\n")
+local sys_write = getfield("io.write")
+sys_write("Hello world\n")
 
 -- function setfield(f, v)
 --     local t = _G                                     -- start with the table of globals
@@ -90,12 +90,49 @@ print("---------------------Use _ENV")
 -- print(a)
 -- print(_G.a)
 
-_ENV = {_G = _G}
-local function foo()
-    _G.print(a)
-end
-a = 10
-foo()
+-- _ENV = {_G = _G}
+-- local function foo()
+--     _G.print(a)
+-- end
+-- a = 10
+-- foo()
 
-_ENV = {_G = _G, a = 29}
-foo()
+-- _ENV = {_G = _G, a = 20}
+-- foo()
+
+-- a = 2
+-- do
+--     local _ENV = {print = print, a = 14}
+--     print(a)
+-- end
+-- print(a)
+
+-- function factory(_ENV)
+--     return function()
+--         return a
+--     end
+-- end
+
+-- f1 = factory({a = 6})
+-- f2 = factory({a = 7})
+-- print(f1())
+-- print(f2())
+
+-- local foo
+-- do
+--     local _ENV = _ENV
+--     function foo()
+--         print(X)
+--     end
+-- end
+-- X = 13
+-- _ENV = nil
+-- foo()
+-- X = 0
+
+-- local print = print
+-- function foo(_ENV, a)
+--     print(a + b)
+-- end
+-- foo({b = 14}, 12)
+-- foo({b = 10}, 1)
