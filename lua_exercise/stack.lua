@@ -36,9 +36,34 @@ function Stack:isempty()
     end
 end
 
+StackQueue = Stack:new()
+
+function StackQueue:insertbottom(v)
+    for i = #self.data, 1, -1 do
+        self.data[i + 1] = self.data[i]
+    end
+    self.data[1] = v
+    self.top_index = self.top_index + 1
+end
+
 local s = Stack:new()
 s:push("Hello")
 s:push("World")
 s:pop()
 s:pop()
-s:pop()
+-- s:pop()
+
+local q = StackQueue:new()
+q:push(1)
+q:push(2)
+q:push(3)
+q:insertbottom(0)
+print(q:top())
+q:pop()
+print(q:top())
+q:pop()
+print(q:top())
+q:pop()
+print(q:top())
+q:pop()
+-- q:pop()
