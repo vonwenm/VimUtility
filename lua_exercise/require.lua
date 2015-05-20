@@ -1,9 +1,8 @@
 print(package.path)
 print(package.cpath)
-assert(require "split")
+local MrvonLib = assert(require "split")
 
-
-local res = split("HelloOrWorldOrWinOrFail", "Or")
+local res = MrvonLib.split("HelloOrWorldOrWinOrFail", "Or")
 for _, v in ipairs(res) do
     print(v)
 end

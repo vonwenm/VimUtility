@@ -1,4 +1,6 @@
-function split(str, sep)
+local MrvonLib = {}
+
+function MrvonLib.split(str, sep)
     local res = {}
     local l
     while true do
@@ -13,3 +15,5 @@ function split(str, sep)
     res[#res + 1] = str
     return res
 end
+
+return MrvonLib
