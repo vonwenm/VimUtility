@@ -1,4 +1,4 @@
-StringLib = {}
+local StringLib = {}
 
 function StringLib.split(str, sep)
     local res = {}

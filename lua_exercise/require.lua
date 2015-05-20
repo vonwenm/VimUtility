@@ -1,9 +1,10 @@
 print(package.path)
 print(package.cpath)
-StringLib = assert(require "split")
 
+local StringLib = assert(require "split")
 
 local res = StringLib.split("HelloOrWorldOrWinOrFail", "Or")
+
 for _, v in ipairs(res) do
     print(v)
 end
