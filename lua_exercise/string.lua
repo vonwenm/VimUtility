@@ -97,17 +97,22 @@
 -- print(string.match(test, "/%*.*%*/"))
 -- print(string.gsub(test, "/%*.-%*/", ""))
 
-function is_number_str(s)
-    if string.find(s, "^[+-]?%d+$") then
-        return true
-    else
-        return false
-    end
-end
+-- function is_number_str(s)
+--     if string.find(s, "^[+-]?%d+$") then
+--         return true
+--     else
+--         return false
+--     end
+-- end
 
-assert(is_number_str("+123"))
-assert(is_number_str("-123"))
-assert(is_number_str("123"))
-assert(not is_number_str("a123"))
-assert(not is_number_str("_123"))
-assert(not is_number_str("123a"))
+-- assert(is_number_str("+123"))
+-- assert(is_number_str("-123"))
+-- assert(is_number_str("123"))
+-- assert(not is_number_str("a123"))
+-- assert(not is_number_str("_123"))
+-- assert(not is_number_str("123a"))
+
+s = "a (enclosed (in) parentheses) line"
+print(s)
+print(string.gsub(s, "%b((", ""))
+print(string.gsub(s, "%b()", ""))
