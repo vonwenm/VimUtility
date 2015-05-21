@@ -112,7 +112,116 @@
 -- assert(not is_number_str("_123"))
 -- assert(not is_number_str("123a"))
 
-s = "a (enclosed (in) parentheses) line"
-print(s)
-print(string.gsub(s, "%b((", ""))
-print(string.gsub(s, "%b()", ""))
+-- s = "a (enclosed (in) parentheses) line"
+-- print(s)
+-- print(string.gsub(s, "%b((", ""))
+-- print(string.gsub(s, "%b()", ""))
+
+-- pair = "name = Anna"
+-- key, value = string.match(pair, "(%a+)%s*=%s*(%a+)")
+-- print(key, value)
+
+-- date = "Today is 17/7/1990"
+-- d, m, y = string.match(date, "(%d+)/(%d+)/(%d+)")
+-- print(d, m, y)
+
+-- quote_str = [[then he said: "it's all right"!]]
+-- pattern = "([\"'])(.-)(%1)"
+-- q1, quoted_part, q2 = string.match(quote_str, pattern)
+-- print(quoted_part)
+-- print(q1)
+-- print(q2)
+
+-- pattern = "%[(=*)%[(.-)%]%1%]"
+-- s = "a = [===[[[ something ]] ]==] ]===]; print(a)"
+-- print(string.match(s, pattern))
+
+-- print(string.gsub("hello lua!", "%a", "%0-%0-"))
+-- print(string.gsub("hello Lua", "(.)(.)(.)(.)", "%4%3%2%1"))
+
+-- s = [[the \quote{task} is to \em{change} that.]]
+-- s = string.gsub(s, "\\(%a+){(.-)}", "<%1>%2</%1>")
+-- print(s)
+
+-- function trim(s)
+--     return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
+-- end
+-- print("{" .. trim("   hello world      ") .. "}")
+
+-- function expand(s)
+--     return (string.gsub(s, "$(%w+)", _G))
+-- end
+
+-- function expand2(s)
+--     return (string.gsub(s, "$(%w+)", function(n)
+--         return tostring(_G[n])
+--     end))
+-- end
+
+-- name = "Lua"
+-- status = "great"
+
+-- print(expand("$name is $status"))
+-- print(expand("$othername is $status"))
+-- print(expand2("$name is $status"))
+-- print(expand2("$othername is $status"))
+-- print(expand2("print = $print; a = $a"))
+
+-- function toxml(s)
+--     s = string.gsub(s, "\\(%a+)(%b{})", function(tag, body)
+--         body = string.sub(body, 2, -2)
+--         body = toxml(body)
+--         return string.format("<%s>%s</%s>", tag, body, tag)
+--     end)
+--     return s
+-- end
+
+-- print(toxml("\\title{The \\bold{big} example}"))
+
+function unescape(s)
+    s = string.gsub(s, "+", " ")
+    s = string.gsub(s, "%%(%x%x)", function(h)
+        return string.char((tonumber(h, 16)))
+    end)
+    return s
+end
+
+cgi = {}
+function decode(s)
+    for name, value in string.gmatch(s, "([^&=]+)=([^&=]+)") do
+        name = unescape(name)
+        value = unescape(value)
+        cgi[name] = value
+    end
+end
+
+function escape(s)
+    s = string.gsub(s, "[&=+%%%c]", function(c)
+        return string.format("%%%02X", string.byte(c))
+    end)
+    s = string.gsub(s, " ", "+")
+    return s
+end
+
+function encode(t)
+    local b = {}
+    for k, v in pairs(t) do
+        b[#b + 1] = (escape(k) .. "=" .. escape(v))
+    end
+    return table.concat(b, "&")
+end
+
+
+ori_str = "a + b = c"
+encode_str = escape(ori_str)
+decode_str = unescape(encode_str)
+print(ori_str)
+print(encode_str)
+print(decode_str)
+
+t = {
+    name = "a1",
+    query = "a+b = c",
+    q = "yes or no",
+}
+print(encode(t))
