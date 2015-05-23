@@ -229,16 +229,84 @@ print(encode(t))
 -- print(string.match("hello", "()ll()"))
 -- print(string.find("hello", "()ll()"))
 
-function expandTabs(s, tab)
+function expandTabs(s, tab, sep)
     tab = tab or 8 -- tab "size" (default is 8)
+    sep = sep or " "
     local corr = 0
     s = string.gsub(s, "()\t", function(p)
-        print("POS: " .. p)
         local sp = tab - (p - 1 + corr) % tab
         corr = corr - 1 + sp
-        return string.rep(" ", sp)
+        return string.rep(sep, sp)
     end)
     return s
 end
 
-print(expandTabs("1\thello\tworld\texpand\ttab\tlongest\t2"))
+-- print(expandTabs("1\thello\tworld\texpand\ttab\tlongest\t2"))
+
+-- print(expandTabs("|\t|\t|\t|\t|\t", 8, "-"))
+-- print(expandTabs("\tHelloooo\tWorld"))
+-- print(expandTabs("|\t|\t|\t|\t|\t", 8, "-"))
+
+function unexpandtab(s, tab, sep)
+    tab = tab or 8 -- tab "size" (default is 8)
+    sep = sep or " "
+    local pat = string.rep(".", tab)
+    s = string.gsub(s, pat, "%0\1")
+    s = string.gsub(s, " +\1", "\t")
+    s = string.gsub(s, "\1", "")
+    return s
+end
+
+s = expandTabs("\tHelloooo\tWorld")
+print(s)
+print(unexpandtab(s))
+
+function code(s)
+    return (string.gsub(s, "\\(.)", function(x)
+        return string.format("\\%03d", string.byte(x))
+    end))
+end
+
+function decode(s)
+    return (string.gsub(s, "\\(%d%d%d)", function(d)
+        return string.format("\\%s", string.char(tonumber(d)))
+    end))
+end
+
+assert(s == decode(code(s)))
+
+s = [[follows a typical string: "This is \"great\"!".]]
+cs = code(s)
+print(s)
+print(cs)
+cs = string.gsub(cs, '".-"', string.upper)
+print(cs)
+cs = decode(cs)
+print(cs)
+
+s1 = "我们"
+s2 = "WR"
+-- print(string.reverse(s1))
+-- print(string.reverse(s2))
+
+print(#(string.gsub(s1, "[\128-\191]", "")))
+
+for c in string.gmatch(s1, ".[\128-\191]*") do
+    print(c)
+end
+
+local a = {}
+a[#a + 1] = "热爱生活"
+a[#a + 1] = "热爱编程"
+a[#a + 1] = "热爱爸妈"
+
+local l = table.concat(a, ";")
+print(l, #(string.gsub(l, "[\128-\191]", "")))
+
+for w in string.gmatch(l, "[^;]+") do
+    print(w)
+end
+
+for c in string.gmatch(a[3], ".[\128-\191]*") do
+    print(c)
+end
