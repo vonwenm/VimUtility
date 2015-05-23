@@ -310,3 +310,82 @@ end
 for c in string.gmatch(a[3], ".[\128-\191]*") do
     print(c)
 end
+
+function split(s, sep)
+    local t = {}
+    local pattern = string.format("()%s", sep)
+    local p = 1
+    for k in string.gmatch(s, pattern) do
+        t[#t + 1] = string.sub(s, p, k - 1)
+        p = k + 1
+    end
+    t[#t + 1] = string.sub(s, p, -1)
+    return t
+end
+
+function print_t(t)
+    for i = 1, #t do
+        print(i, t[i])
+    end
+end
+
+s = "a whole new world"
+print_t(split(s, " "))
+
+s = " a whole new world"
+print_t(split(s, " "))
+
+s = " a whole new world "
+print_t(split(s, " "))
+
+function transliterate(s, t)
+    local r = string.gsub(s, "%a", function(p)
+        if t[p] == false then
+            return ""
+        else
+            return t[p]
+        end
+    end)
+    return r
+end
+
+t = {
+    a = "p",
+    b = "q",
+    c = "z",
+    d = false,
+    e = "w",
+    f = false,
+}
+s = "abcdefg"
+print(transliterate(s, t))
+
+function reverse_utf8(s)
+    local t = {}
+    for w in string.gmatch(s, "[^\128-\191][\128-\191]*") do
+        table.insert(t, 1, w)
+    end
+    return table.concat(t)
+end
+print(reverse_utf8("我们的天空"))
+
+function transliterate_utf8(s, t)
+    local r = string.gsub(s, "[^\128-\191][\128-\191]*", function(p)
+        if t[p] == false then
+            return ""
+        else
+            return t[p]
+        end
+    end)
+    return r
+end
+
+t = {
+    ["我"] = "你",
+    ["们"] = "们",
+    ["的"] = "之",
+    ["天"] = "土",
+    ["空"] = "地",
+}
+s = "我们的天空在这里"
+print(transliterate_utf8(s, t))
