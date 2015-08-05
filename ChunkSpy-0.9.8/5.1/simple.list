@@ -1,0 +1,112 @@
+Pos   Hex Data           Description or Code
+------------------------------------------------------------------------
+0000                     ** source chunk: simple_1.bin
+                         ** global header start **
+0000  1B4C7561           header signature: "\27Lua"
+0004  51                 version (major:minor hex digits)
+0005  00                 format (0=official)
+0006  01                 endianness (1=little endian)
+0007  04                 size of int (bytes)
+0008  08                 size of size_t (bytes)
+0009  04                 size of Instruction (bytes)
+000A  08                 size of number (bytes)
+000B  00                 integral (1=integral)
+                         * number type: double
+                         * x64 macosx (64-bit, little endian, doubles)
+                         ** global header end **
+                         
+000C                     ** function [0] definition (level 1)
+                         ** start of function **
+000C  0C00000000000000   string size (12)
+0014  4073696D706C652E+  "@simple."
+001C  6C756100           "lua\0"
+                         source name: @simple.lua
+0020  00000000           line defined (0)
+0024  00000000           last line defined (0)
+0028  00                 nups (0)
+0029  00                 numparams (0)
+002A  02                 is_vararg (2)
+002B  02                 maxstacksize (2)
+                         * code:
+002C  05000000           sizecode (5)
+0030  01000000           [1] loadk      0   0        ; 8
+0034  64000000           [2] closure    1   0        ; 1 upvalues
+0038  00000000           [3] move       0   0      
+003C  47400000           [4] setglobal  1   1        ; b
+0040  1E008000           [5] return     0   1      
+                         * constants:
+0044  02000000           sizek (2)
+0048  03                 const type 3
+0049  0000000000002040   const [0]: (8)
+0051  04                 const type 4
+0052  0200000000000000   string size (2)
+005A  6200               "b\0"
+                         const [1]: "b"
+                         * functions:
+005C  01000000           sizep (1)
+                         
+0060                     ** function [0] definition (level 2)
+                         ** start of function **
+0060  0000000000000000   string size (0)
+                         source name: (none)
+0068  02000000           line defined (2)
+006C  02000000           last line defined (2)
+0070  01                 nups (1)
+0071  01                 numparams (1)
+0072  00                 is_vararg (0)
+0073  02                 maxstacksize (2)
+                         * code:
+0074  04000000           sizecode (4)
+0078  44000000           [1] getupval   1   0        ; a
+007C  4C008000           [2] add        1   1   0  
+0080  47000000           [3] setglobal  1   0        ; d
+0084  1E008000           [4] return     0   1      
+                         * constants:
+0088  01000000           sizek (1)
+008C  04                 const type 4
+008D  0200000000000000   string size (2)
+0095  6400               "d\0"
+                         const [0]: "d"
+                         * functions:
+0097  00000000           sizep (0)
+                         * lines:
+009B  04000000           sizelineinfo (4)
+                         [pc] (line)
+009F  02000000           [1] (2)
+00A3  02000000           [2] (2)
+00A7  02000000           [3] (2)
+00AB  02000000           [4] (2)
+                         * locals:
+00AF  01000000           sizelocvars (1)
+00B3  0200000000000000   string size (2)
+00BB  6300               "c\0"
+                         local [0]: c
+00BD  00000000             startpc (0)
+00C1  03000000             endpc   (3)
+                         * upvalues:
+00C5  01000000           sizeupvalues (1)
+00C9  0200000000000000   string size (2)
+00D1  6100               "a\0"
+                         upvalue [0]: a
+                         ** end of function **
+
+                         * lines:
+00D3  05000000           sizelineinfo (5)
+                         [pc] (line)
+00D7  01000000           [1] (1)
+00DB  02000000           [2] (2)
+00DF  02000000           [3] (2)
+00E3  02000000           [4] (2)
+00E7  02000000           [5] (2)
+                         * locals:
+00EB  01000000           sizelocvars (1)
+00EF  0200000000000000   string size (2)
+00F7  6100               "a\0"
+                         local [0]: a
+00F9  01000000             startpc (1)
+00FD  04000000             endpc   (4)
+                         * upvalues:
+0101  00000000           sizeupvalues (0)
+                         ** end of function **
+
+0105                     ** end of chunk **
